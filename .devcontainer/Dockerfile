@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xterm \
     git \
     procps \
+    firefox \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up a non-root user
