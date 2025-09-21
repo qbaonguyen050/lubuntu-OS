@@ -18,10 +18,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     firefox \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up a non-root user
+# Set up a non-root user AND fix the git 'dubious ownership' error
 RUN useradd -m -s /bin/bash vscode && \
     echo "vscode:vscode" | chpasswd && \
-    adduser vscode sudo
+    adduser vscode sudo && \
+    su - vscode -c "git config --global --add safe.directory /workspaces/lubuntu-OS"
 
 # Copy the debug script and make it executable
 COPY debug-desktop.sh /.devcontainer/debug-desktop.sh
