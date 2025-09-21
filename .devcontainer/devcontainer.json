@@ -17,5 +17,5 @@
       ]
     }
   },
-  "postCreateCommand": "sudo /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"
+  "postCreateCommand": "sudo service supervisor start"
 }
