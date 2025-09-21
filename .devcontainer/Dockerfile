@@ -1,20 +1,17 @@
-# Use the official Lubuntu 22.04 image as a base
-FROM lubuntu/lubuntu:22.04
+# Use the OFFICIAL Ubuntu 22.04 image as a base
+FROM ubuntu:22.04
 
 # Set environment variables to prevent interactive prompts during installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update the package list and install necessary software
-# - supervisord: To run multiple services (VNC server and window manager)
-# - novnc: The web-based VNC client
-# - websockify: Bridges web sockets and TCP for noVNC
-# - lxqt: The lightweight desktop environment for Lubuntu
-# - sudo, xterm: Basic utilities
-RUN apt-get update && apt-get install -y \
+# Update package list and install the full Lubuntu desktop, VNC server, and dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    lubuntu-desktop \
     supervisor \
     novnc \
     websockify \
-    lxqt \
+    x11vnc \
+    xvfb \
     sudo \
     xterm \
     && rm -rf /var/lib/apt/lists/*
@@ -24,15 +21,15 @@ RUN useradd -m -s /bin/bash vscode && \
     echo "vscode:vscode" | chpasswd && \
     adduser vscode sudo
 
-# Configure Supervisor to start the desktop environment and VNC server
+# Configure Supervisor to start all services
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Expose the port for noVNC
-EXPOSE 6080
+# Expose the port for noVNC (web access) and VNC (desktop client access)
+EXPOSE 6080 5900
 
 # Set the default user
 USER vscode
 WORKDIR /home/vscode
 
-# Set the entrypoint to start Supervisor
+# Start Supervisor to manage all our services
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
