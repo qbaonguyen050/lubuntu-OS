@@ -4,7 +4,7 @@ FROM ubuntu:22.04
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update package list and install our software, INCLUDING git-lfs
+# Update package list and install our software
 RUN apt-get update && apt-get install -y --no-install-recommends \
     lubuntu-desktop \
     novnc \
@@ -23,6 +23,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN useradd -m -s /bin/bash vscode && \
     echo "vscode:vscode" | chpasswd && \
     adduser vscode sudo
+
+# Add the self-healing Git script to the user's terminal profile
+RUN echo '\n# Self-healing script for Git "dubious ownership" error\nif git status &> /dev/null; then\n  :\nelse\n  echo "Unsafe Git repository detected. Applying automatic fix..."\n  git config --global --add safe.directory /workspaces/lubuntu-OS\n  echo "Fix applied. You can now use Git normally."\nfi' >> /home/vscode/.bashrc
 
 # Copy the startup script and make it executable
 COPY start-desktop.sh /.devcontainer/start-desktop.sh

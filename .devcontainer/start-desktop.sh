@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This entire script runs in the background
+# This script runs in the background to not block the codespace
 (
   set -e
   echo "--- [Desktop Startup] Starting services in the background ---"
@@ -25,4 +25,4 @@
   su -l vscode -c "export DISPLAY=:0; websockify --web=/usr/share/novnc/ 6080 localhost:5900 &"
 
   echo "--- [Desktop Startup] All services launched. ---"
-) &
+)

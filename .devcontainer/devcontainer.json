@@ -17,5 +17,5 @@
       ]
     }
   },
-  "postCreateCommand": "git config --global --add safe.directory /workspaces/lubuntu-OS && /bin/bash /.devcontainer/start-desktop.sh"
+  "postCreateCommand": "/bin/bash /.devcontainer/start-desktop.sh"
 }
