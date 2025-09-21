@@ -4,7 +4,7 @@ FROM ubuntu:22.04
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update package list and install only what we need
+# Update package list and install our software
 RUN apt-get update && apt-get install -y --no-install-recommends \
     lubuntu-desktop \
     novnc \
@@ -23,13 +23,9 @@ RUN useradd -m -s /bin/bash vscode && \
     echo "vscode:vscode" | chpasswd && \
     adduser vscode sudo
 
-# Copy the startup script and make it executable
-COPY start-desktop.sh /
-RUN chmod +x /start-desktop.sh
+# Copy the debug script and make it executable
+COPY debug-desktop.sh /.devcontainer/debug-desktop.sh
+RUN chmod +x /.devcontainer/debug-desktop.sh
 
-# Set the default user
-USER vscode
-WORKDIR /home/vscode
-
-# Keep the container alive
+# Keep the container alive for the postCreateCommand
 CMD ["sleep", "infinity"]

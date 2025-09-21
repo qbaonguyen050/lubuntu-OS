@@ -1,5 +1,5 @@
 {
-  "name": "Lubuntu Desktop",
+  "name": "Lubuntu Desktop Debugger",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -17,5 +17,5 @@
       ]
     }
   },
-  "postCreateCommand": "/bin/bash ./.devcontainer/start-desktop.sh"
+  "postCreateCommand": "/bin/bash /.devcontainer/debug-desktop.sh"
 }
