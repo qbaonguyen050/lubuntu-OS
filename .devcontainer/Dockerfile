@@ -4,7 +4,7 @@ FROM ubuntu:22.04
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update package list and install our software
+# Update package list and install our software, INCLUDING git-lfs
 RUN apt-get update && apt-get install -y --no-install-recommends \
     lubuntu-desktop \
     novnc \
@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     sudo \
     xterm \
     git \
+    git-lfs \
     procps \
     firefox \
     && rm -rf /var/lib/apt/lists/*
