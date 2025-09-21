@@ -1,13 +1,12 @@
 # Use the OFFICIAL Ubuntu 22.04 image as a base
 FROM ubuntu:22.04
 
-# Set environment variables to prevent interactive prompts during installation
+# Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update package list and install the full Lubuntu desktop, VNC server, and dependencies
+# Update package list and install only what we need
 RUN apt-get update && apt-get install -y --no-install-recommends \
     lubuntu-desktop \
-    supervisor \
     novnc \
     websockify \
     x11vnc \
@@ -23,11 +22,9 @@ RUN useradd -m -s /bin/bash vscode && \
     echo "vscode:vscode" | chpasswd && \
     adduser vscode sudo
 
-# Configure Supervisor to start all services
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-# Expose the port for noVNC (web access) and VNC (desktop client access)
-EXPOSE 6080 5900
+# Copy the startup script and make it executable
+COPY start-desktop.sh /
+RUN chmod +x /start-desktop.sh
 
 # Set the default user
 USER vscode
