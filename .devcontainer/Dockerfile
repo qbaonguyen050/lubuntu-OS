@@ -5,7 +5,6 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Update package list and install the full Lubuntu desktop, VNC server, and dependencies
-# ADDED git AND procps TO THIS LIST
 RUN apt-get update && apt-get install -y --no-install-recommends \
     lubuntu-desktop \
     supervisor \
@@ -34,5 +33,5 @@ EXPOSE 6080 5900
 USER vscode
 WORKDIR /home/vscode
 
-# Start Supervisor to manage all our services
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Keep the container alive
+CMD ["sleep", "infinity"]
