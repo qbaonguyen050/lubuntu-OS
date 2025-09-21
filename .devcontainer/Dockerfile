@@ -5,6 +5,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Update package list and install the full Lubuntu desktop, VNC server, and dependencies
+# ADDED git AND procps TO THIS LIST
 RUN apt-get update && apt-get install -y --no-install-recommends \
     lubuntu-desktop \
     supervisor \
@@ -14,6 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xvfb \
     sudo \
     xterm \
+    git \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up a non-root user
