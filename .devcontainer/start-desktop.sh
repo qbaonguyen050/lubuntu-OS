@@ -1,18 +1,28 @@
 #!/bin/bash
 
-# Clean up any leftover X server lock files
-rm -f /tmp/.X0-lock
+# This entire script runs in the background
+(
+  set -e
+  echo "--- [Desktop Startup] Starting services in the background ---"
 
-# Start a virtual screen in the background as root
-Xvfb :0 -screen 0 1280x800x24 &
-sleep 2
+  # 1. CLEANUP
+  echo "--- [Desktop Startup] Cleaning up old X server lock file..."
+  rm -f /tmp/.X0-lock
 
-# Set the DISPLAY environment variable for all subsequent commands
-export DISPLAY=:0
+  # 2. START VIRTUAL SCREEN
+  echo "--- [Desktop Startup] Starting virtual screen (Xvfb)..."
+  Xvfb :0 -screen 0 1280x800x24 &
+  sleep 3 # Give Xvfb time to start
 
-# Use `su` to run the following commands as the 'vscode' user
-su - vscode -c "startlxqt &"
-su - vscode -c "x11vnc -display :0 -forever -passwd vscode -shared &"
-su - vscode -c "websockify --web=/usr/share/novnc/ 6080 localhost:5900 &"
+  # 3. START DESKTOP AND TOOLS AS 'vscode' USER
+  echo "--- [Desktop Startup] Starting Lubuntu Desktop (LXQt)..."
+  su -l vscode -c "export DISPLAY=:0; startlxqt &"
 
-echo "Lubuntu desktop services have been started."
+  echo "--- [Desktop Startup] Starting VNC Server (x11vnc)..."
+  su -l vscode -c "export DISPLAY=:0; x11vnc -display :0 -forever -passwd vscode -shared &"
+
+  echo "--- [Desktop Startup] Starting Web Client (noVNC)..."
+  su -l vscode -c "export DISPLAY=:0; websockify --web=/usr/share/novnc/ 6080 localhost:5900 &"
+
+  echo "--- [Desktop Startup] All services launched. ---"
+) &

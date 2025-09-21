@@ -1,5 +1,5 @@
 {
-  "name": "Lubuntu Desktop Debugger",
+  "name": "Lubuntu Desktop",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -17,5 +17,5 @@
       ]
     }
   },
-  "postCreateCommand": "/bin/bash /.devcontainer/debug-desktop.sh"
+  "postCreateCommand": "git config --global --add safe.directory /workspaces/lubuntu-OS && /bin/bash /.devcontainer/start-desktop.sh"
 }
