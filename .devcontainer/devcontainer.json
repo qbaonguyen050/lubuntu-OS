@@ -17,5 +17,5 @@
       ]
     }
   },
-  "postCreateCommand": "sudo service supervisor start"
+  "postCreateCommand": "sudo /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf && sleep 2 && sudo supervisorctl status"
 }
